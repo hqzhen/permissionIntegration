@@ -1,16 +1,10 @@
-package com.example.demo.controller;
+package com.permission.zhq.controller;
 
-import com.example.demo.dto.UserActiveDataDto;
-import lombok.val;
+import com.permission.zhq.dto.UserActiveDataDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author demo

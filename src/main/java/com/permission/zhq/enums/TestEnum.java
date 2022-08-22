@@ -1,4 +1,4 @@
-package com.example.demo.enums;
+package com.permission.zhq.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
