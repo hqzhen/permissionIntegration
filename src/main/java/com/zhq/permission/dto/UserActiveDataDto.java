@@ -1,4 +1,4 @@
-package com.permission.zhq.dto;
+package com.zhq.permission.dto;
 
 import lombok.Data;
 

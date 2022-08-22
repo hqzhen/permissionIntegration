@@ -1,6 +1,6 @@
-package com.permission.zhq.controller;
+package com.zhq.permission.controller;
 
-import com.permission.zhq.dto.UserActiveDataDto;
+import com.zhq.permission.dto.UserActiveDataDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
