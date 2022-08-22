@@ -14,6 +14,7 @@ public class ResultUtils {
 
     public static Result success(Object data) {
         Result result = new Result();
+        result.setSuccess(true);
         result.setCode(SUCCESS_CODE);
         String msg = LanguageMsgUtils.getErrorMsg(String.valueOf(SUCCESS_CODE));
         result.setMsg(msg == null ? HttpStatus.OK.getReasonPhrase() : msg);
