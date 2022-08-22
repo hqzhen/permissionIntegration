@@ -1,4 +1,4 @@
-package com.zhq.permission.common.base;
+package com.zhq.permission.common.base.mybatisplus;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;

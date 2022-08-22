@@ -1,6 +1,6 @@
 package com.zhq.permission.mapper;
 
-import com.zhq.permission.common.base.SuperMapper;
+import com.zhq.permission.common.base.mybatisplus.SuperMapper;
 import com.zhq.permission.entity.UserEntity;
 
 /**

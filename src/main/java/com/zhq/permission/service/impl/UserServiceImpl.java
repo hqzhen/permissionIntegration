@@ -1,7 +1,7 @@
 package com.zhq.permission.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.zhq.permission.common.base.SuperServiceImpl;
+import com.zhq.permission.common.base.mybatisplus.SuperServiceImpl;
 import com.zhq.permission.common.pojo.vo.UserVO;
 import com.zhq.permission.entity.UserEntity;
 import com.zhq.permission.mapper.UserMapper;

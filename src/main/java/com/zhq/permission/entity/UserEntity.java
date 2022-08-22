@@ -1,7 +1,7 @@
 package com.zhq.permission.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.zhq.permission.common.base.SuperEntity;
+import com.zhq.permission.common.base.mybatisplus.SuperEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

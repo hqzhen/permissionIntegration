@@ -1,4 +1,4 @@
-package com.zhq.permission.common.base;
+package com.zhq.permission.common.base.mybatisplus;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
