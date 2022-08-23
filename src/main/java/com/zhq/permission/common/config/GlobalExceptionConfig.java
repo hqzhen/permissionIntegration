@@ -4,6 +4,7 @@ import com.zhq.permission.common.base.response.BaseException;
 import com.zhq.permission.common.base.response.BusinessErrorCode;
 import com.zhq.permission.common.base.response.BusinessException;
 import com.zhq.permission.common.base.response.Result;
+import com.zhq.permission.common.exception.PermissionException;
 import com.zhq.permission.common.utils.RequestBodyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -64,6 +65,21 @@ public class GlobalExceptionConfig {
         log.error("http入参序列化错误：url:{}，普通参数：{},body参数：{}错误信息：{}",
                 request.getRequestURI(), request.getQueryString(), RequestBodyUtils.getParameter(request), ex.getMessage());
         return new Result(new BusinessException(BusinessErrorCode.INPUT_PARAMETER_FORMAT_ERROR), request.getRequestURI());
+    }
+
+    /**
+     * 用户授权异常
+     *
+     * @param ex      授权异常
+     * @param request 请求
+     * @return ErrorResponse
+     */
+    @ExceptionHandler(PermissionException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public Result handleUserException(PermissionException ex, HttpServletRequest request) {
+        log.error("用户授权异常：url:{}，普通参数：{}，body参数：{},异常：{}", request.getRequestURI(), request.getQueryString(),
+                RequestBodyUtils.getParameter(request), ex);
+        return new Result(ex, request.getRequestURI());
     }
 
     /**
