@@ -1,5 +1,6 @@
 package com.zhq.permission.common.config;
 
+import com.zhq.permission.common.base.response.BaseException;
 import com.zhq.permission.common.base.response.BusinessErrorCode;
 import com.zhq.permission.common.base.response.BusinessException;
 import com.zhq.permission.common.base.response.Result;
@@ -32,16 +33,16 @@ public class GlobalExceptionConfig {
      * @param ex 校验异常
      * @return ErrorResponse
      */
-    @ExceptionHandler({BindException.class, MethodArgumentNotValidException.class, ConstraintViolationException.class})
+    @ExceptionHandler({ MethodArgumentNotValidException.class,BindException.class, ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result validExceptionHandler(Exception ex, HttpServletRequest request) {
         String errMsg = null;
-        if (ex instanceof BindException) {
-            errMsg = ((BindException) ex).getBindingResult().getFieldErrors()
+        if (ex instanceof MethodArgumentNotValidException) {
+            errMsg = ((MethodArgumentNotValidException) ex).getBindingResult().getFieldErrors()
                     .stream().map(error -> error.getField() + ":" + error.getDefaultMessage())
                     .collect(Collectors.joining(";"));
-        } else if (ex instanceof MethodArgumentNotValidException) {
-            errMsg = ((MethodArgumentNotValidException) ex).getBindingResult().getFieldErrors()
+        } else if (ex instanceof BindException) {
+            errMsg = ((BindException) ex).getBindingResult().getFieldErrors()
                     .stream().map(error -> error.getField() + ":" + error.getDefaultMessage())
                     .collect(Collectors.joining(";"));
         } else if (ex instanceof ConstraintViolationException) {
@@ -63,5 +64,54 @@ public class GlobalExceptionConfig {
         log.error("http入参序列化错误：url:{}，普通参数：{},body参数：{}错误信息：{}",
                 request.getRequestURI(), request.getQueryString(), RequestBodyUtils.getParameter(request), ex.getMessage());
         return new Result(new BusinessException(BusinessErrorCode.INPUT_PARAMETER_FORMAT_ERROR), request.getRequestURI());
+    }
+
+    /**
+     * 业务异常
+     *
+     * @param ex      业务异常
+     * @param request 请求
+     * @return ErrorResponse
+     */
+    @ExceptionHandler(BaseException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    public Result handleBusinessException(BaseException ex, HttpServletRequest request) {
+        log.error("业务异常：url:{}，普通参数：{}，body参数：{},异常：{}",
+                request.getRequestURI(),
+                request.getQueryString(),
+                RequestBodyUtils.getParameter(request),
+                ex);
+        return new Result(ex, request.getRequestURI());
+    }
+
+    /**
+     * 最后兜底的异常
+     *
+     * @param ex 异常
+     */
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(value = HttpStatus.OK)
+    public Result exceptionHandler(Exception ex, HttpServletRequest request) {
+        String errorMsgPrefix = "JSR-303";
+        //是否ValidationList校验失败
+        if (ex.getMessage() != null && ex.getMessage().contains(errorMsgPrefix)) {
+            log.error("ValidationList校验失败：url:{}，普通参数：{},body参数：{},错误信息：{}",
+                    request.getRequestURI(),
+                    request.getQueryString(),
+                    RequestBodyUtils.getParameter(request),
+                    ex.getMessage());
+            return new Result(new BusinessException(
+                    BusinessErrorCode.BAD_REQUEST,
+                    ex.getMessage()),
+                    request.getRequestURI());
+        }
+        log.error("最后兜底的异常：url:{}，普通参数：{}，body参数：{},错误信息：{}",
+                request.getRequestURI(),
+                request.getQueryString(),
+                RequestBodyUtils.getParameter(request),
+                ex);
+        return new Result(new BusinessException(BusinessErrorCode.INTERNAL_SERVER_ERROR,
+                ex.getMessage()),
+                request.getRequestURI());
     }
 }
