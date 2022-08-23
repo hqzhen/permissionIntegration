@@ -29,7 +29,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
         http.csrf().disable();
         //2.放行相关请求
         http.authorizeRequests()
-                .antMatchers("/resource/**","/permission/user/**")
+                .antMatchers("/permission/resource/**","/permission/user/**")
                 .authenticated()
                 .anyRequest().permitAll();
         //配置异常处理器
