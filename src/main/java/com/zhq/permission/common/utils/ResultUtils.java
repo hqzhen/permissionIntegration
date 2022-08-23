@@ -1,6 +1,7 @@
 package com.zhq.permission.common.utils;
 
 import com.zhq.permission.common.base.response.Result;
+import com.zhq.permission.common.exception.errorcode.PermissionErrorCode;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -19,6 +20,15 @@ public class ResultUtils {
         String msg = LanguageMsgUtils.getErrorMsg(String.valueOf(SUCCESS_CODE));
         result.setMsg(msg == null ? HttpStatus.OK.getReasonPhrase() : msg);
         result.setData(data);
+        return result;
+    }
+
+    public static Result authFail(PermissionErrorCode permissionCode) {
+        Result result = new Result();
+        result.setSuccess(false);
+        result.setCode(permissionCode.getCode());
+        String msg = LanguageMsgUtils.getErrorMsg(String.valueOf(permissionCode.getCode()));
+        result.setMsg(msg == null ? permissionCode.getMsg() : msg);
         return result;
     }
 }

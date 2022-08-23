@@ -18,10 +18,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 public class ResourceConfig extends ResourceServerConfigurerAdapter {
 
     @Autowired
-    private MyAccessDeniedHandler accessDeniedHandler;
+    private AccessDeniedHandlerImpl accessDeniedHandler;
 
     @Autowired
-    private MyAuthenticationEntryPoint authenticationEntryPoint;
+    private AuthenticationEntryPointImpl authenticationEntryPoint;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
