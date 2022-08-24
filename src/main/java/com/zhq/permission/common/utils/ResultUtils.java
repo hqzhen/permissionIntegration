@@ -4,6 +4,8 @@ import com.zhq.permission.common.base.response.Result;
 import com.zhq.permission.common.exception.errorcode.PermissionErrorCode;
 import org.springframework.http.HttpStatus;
 
+import java.util.Date;
+
 /**
  * @author zhenghongquan
  * @create 2022/8/22 15:01
@@ -20,6 +22,7 @@ public class ResultUtils {
         String msg = LanguageMsgUtils.getErrorMsg(String.valueOf(SUCCESS_CODE));
         result.setMsg(msg == null ? HttpStatus.OK.getReasonPhrase() : msg);
         result.setData(data);
+        result.setDateTime(new Date());
         return result;
     }
 

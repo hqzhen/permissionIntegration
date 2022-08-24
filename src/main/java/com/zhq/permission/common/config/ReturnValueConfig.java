@@ -12,6 +12,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,9 @@ public class ReturnValueConfig implements InitializingBean {
          */
         @Override
         public void handleReturnValue(Object data, MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest) throws Exception {
+            HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
             Result result = ResultUtils.success(data);
+            result.setPath(request == null ? nativeWebRequest.getContextPath() : request.getRequestURI());
             target.handleReturnValue(result, methodParameter, modelAndViewContainer, nativeWebRequest);
         }
     }

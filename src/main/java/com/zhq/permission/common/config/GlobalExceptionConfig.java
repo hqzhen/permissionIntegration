@@ -5,10 +5,12 @@ import com.zhq.permission.common.base.response.BusinessErrorCode;
 import com.zhq.permission.common.base.response.BusinessException;
 import com.zhq.permission.common.base.response.Result;
 import com.zhq.permission.common.exception.PermissionException;
+import com.zhq.permission.common.exception.errorcode.PermissionErrorCode;
 import com.zhq.permission.common.utils.RequestBodyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -74,12 +76,27 @@ public class GlobalExceptionConfig {
      * @param request 请求
      * @return ErrorResponse
      */
-    @ExceptionHandler(PermissionException.class)
+    @ExceptionHandler({PermissionException.class})
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public Result handleUserException(PermissionException ex, HttpServletRequest request) {
         log.error("用户授权异常：url:{}，普通参数：{}，body参数：{},异常：{}", request.getRequestURI(), request.getQueryString(),
                 RequestBodyUtils.getParameter(request), ex);
         return new Result(ex, request.getRequestURI());
+    }
+
+    /**
+     * 用户授权异常
+     *
+     * @param ex      授权异常
+     * @param request 请求
+     * @return ErrorResponse
+     */
+    @ExceptionHandler({AccessDeniedException.class})
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public Result accessDeniedException(AccessDeniedException ex, HttpServletRequest request) {
+        log.error("用户授权异常：url:{}，普通参数：{}，body参数：{},异常：{}", request.getRequestURI(), request.getQueryString(),
+                RequestBodyUtils.getParameter(request), ex);
+        return new Result(PermissionErrorCode.USER_UNAUTHORIZED.ex(), request.getRequestURI());
     }
 
     /**

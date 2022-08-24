@@ -27,7 +27,7 @@ public class ResourceController {
      * 创建资源
      * @return
      */
-    @PreAuthorize("hasAuthority('system:test:list')")
+    @PreAuthorize("hasAuthority('system:test:create')")
     @PostMapping
     public String doCreate(){
         return "Create Resource OK";
@@ -36,7 +36,7 @@ public class ResourceController {
      * 修改资源
      * @return
      */
-    @PreAuthorize("hasAuthority('system:test:list')")
+    @PreAuthorize("hasAuthority('system:test:update')")
     @PutMapping
     public String doUpdate(){
         return "Update Resource OK";
