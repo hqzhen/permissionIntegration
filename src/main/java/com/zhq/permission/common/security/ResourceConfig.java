@@ -23,6 +23,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private AuthenticationEntryPointImpl authenticationEntryPoint;
 
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         //1.关闭csrf跨域攻击
@@ -32,6 +33,8 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/permission/resource/**","/permission/user/**")
                 .authenticated()
                 .anyRequest().permitAll();
+        //3、登入设置
+       // http.formLogin().failureHandler(loginFailureHandler);
         //配置异常处理器
         http.exceptionHandling()
                 //配置认证失败及授权失败处理器

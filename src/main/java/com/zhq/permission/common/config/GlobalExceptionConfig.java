@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,7 +37,7 @@ public class GlobalExceptionConfig {
      * @param ex 校验异常
      * @return ErrorResponse
      */
-    @ExceptionHandler({ MethodArgumentNotValidException.class,BindException.class, ConstraintViolationException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class, ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result validExceptionHandler(Exception ex, HttpServletRequest request) {
         String errMsg = null;
@@ -91,12 +92,21 @@ public class GlobalExceptionConfig {
      * @param request 请求
      * @return ErrorResponse
      */
-    @ExceptionHandler({AccessDeniedException.class})
+    @ExceptionHandler({AccessDeniedException.class,
+            InternalAuthenticationServiceException.class})
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
-    public Result accessDeniedException(AccessDeniedException ex, HttpServletRequest request) {
+    public Result accessDeniedException(RuntimeException ex, HttpServletRequest request) {
         log.error("用户授权异常：url:{}，普通参数：{}，body参数：{},异常：{}", request.getRequestURI(), request.getQueryString(),
                 RequestBodyUtils.getParameter(request), ex);
-        return new Result(PermissionErrorCode.USER_UNAUTHORIZED.ex(), request.getRequestURI());
+        BaseException error = null;
+        if (ex instanceof AccessDeniedException) {
+            error = PermissionErrorCode.USER_UNAUTHORIZED.ex();
+        } else if (ex instanceof InternalAuthenticationServiceException) {
+            error = PermissionErrorCode.USER_DOES_NOT_EXIST.ex();
+        } else {
+            error = PermissionErrorCode.USER_UNAUTHORIZED.ex();
+        }
+        return new Result(error, request.getRequestURI());
     }
 
     /**
