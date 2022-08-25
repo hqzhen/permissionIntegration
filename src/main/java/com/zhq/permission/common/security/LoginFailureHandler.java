@@ -27,20 +27,21 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Override
     @SneakyThrows
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception){
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
         response.setContentType("application/json;charset=utf-8");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         PrintWriter writer = response.getWriter();
-        String errorMsg = "";
-        String path=request.getRequestURI();
+        String msg = exception.getMessage();
+        String result = "";
+        String path = request.getRequestURI();
         if (exception instanceof BadCredentialsException) {
-            errorMsg = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.AUTHENTICATION_FAILED,path));
+            result = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.AUTHENTICATION_FAILED, path,msg));
         } else if (exception instanceof UsernameNotFoundException) {
-            errorMsg = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.USER_DOES_NOT_EXIST,path));
-        }  else {
+            result = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.USER_DOES_NOT_EXIST, path,msg));
+        } else {
             log.error("登入未知异常:", exception);
-            errorMsg = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.AUTHENTICATION_FAILED,path));
+            result = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.AUTHENTICATION_FAILED, path,msg));
         }
-        writer.write(errorMsg);
+        writer.write(result);
     }
 }

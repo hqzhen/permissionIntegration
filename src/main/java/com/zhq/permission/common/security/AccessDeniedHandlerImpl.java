@@ -26,7 +26,9 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
                        AccessDeniedException e) throws IOException, ServletException {
         httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
         httpServletResponse.setContentType("application/json;charset=UTF-8");
-        httpServletResponse.getWriter().write(JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.USER_FORBIDDEN,httpServletRequest.getRequestURI())));
+        httpServletResponse.getWriter().write(JSON.toJSONString(ResultUtils
+                .authFail(PermissionErrorCode.USER_FORBIDDEN,
+                        httpServletRequest.getRequestURI(),e.getMessage())));
     }
 
 }
