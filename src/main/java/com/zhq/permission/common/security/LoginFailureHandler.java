@@ -32,13 +32,14 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         PrintWriter writer = response.getWriter();
         String errorMsg = "";
+        String path=request.getRequestURI();
         if (exception instanceof BadCredentialsException) {
-            errorMsg = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.AUTHENTICATION_FAILED));
+            errorMsg = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.AUTHENTICATION_FAILED,path));
         } else if (exception instanceof UsernameNotFoundException) {
-            errorMsg = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.USER_DOES_NOT_EXIST));
+            errorMsg = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.USER_DOES_NOT_EXIST,path));
         }  else {
             log.error("登入未知异常:", exception);
-            errorMsg = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.AUTHENTICATION_FAILED));
+            errorMsg = JSON.toJSONString(ResultUtils.authFail(PermissionErrorCode.AUTHENTICATION_FAILED,path));
         }
         writer.write(errorMsg);
     }

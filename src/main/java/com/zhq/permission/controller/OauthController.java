@@ -1,6 +1,9 @@
 package com.zhq.permission.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint;
@@ -38,6 +41,14 @@ public class OauthController {
      * 重写/oauth/token这个默认接口，返回的数据格式统一
      */
     @PostMapping(value = "/token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "grant_type", value = "认证类型", required = true, example = "password", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "client_id", value = "客户端标识", required = true, example = "gateway-client", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "client_secret", value = "客户端密钥", required = true,example = "123456", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = true,example = "zhq", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true,example = "123456", dataType = "String", paramType = "query")
+    })
+    @ApiOperation(value = "生成token")
     public OAuth2AccessToken postAccessToken(Principal principal, @RequestParam
             Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
         return tokenEndpoint.postAccessToken(principal, parameters).getBody();
@@ -47,7 +58,8 @@ public class OauthController {
      * 重写/oauth/check_token这个默认接口，用于校验令牌，返回的数据格式统一
      */
     @PostMapping(value = "/check_token")
-    public Map<String, ?> checkToken(@RequestParam("token") String value)  {
+    @ApiOperation(value = "解析token")
+    public Map<String, ?> checkToken(@RequestParam("token") String value) {
         return checkTokenEndpoint.checkToken(value);
     }
 }

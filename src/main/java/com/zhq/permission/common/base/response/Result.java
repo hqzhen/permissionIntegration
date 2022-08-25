@@ -1,5 +1,7 @@
 package com.zhq.permission.common.base.response;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zhq.permission.common.utils.LanguageMsgUtils;
 import com.zhq.permission.common.utils.ResultUtils;
 import lombok.Data;
@@ -20,6 +22,8 @@ public class Result {
 
     private String path;
 
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date dateTime;
 
     private Object data = new Object();

@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -84,6 +85,9 @@ public class Oauth2Config extends AuthorizationServerConfigurerAdapter {
                 //设置允许对哪些请求方式进行认证(默认支支持post):可选
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST);
     }
+
+
+
 
     @Bean
     public AuthorizationServerTokenServices tokenService(){

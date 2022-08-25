@@ -26,12 +26,26 @@ public class ResultUtils {
         return result;
     }
 
-    public static Result authFail(PermissionErrorCode permissionCode) {
+    public static Result authFail(PermissionErrorCode permissionCode,String path) {
         Result result = new Result();
         result.setSuccess(false);
+        result.setPath(path);
+        result.setDateTime(new Date());
         result.setCode(permissionCode.getCode());
         String msg = LanguageMsgUtils.getErrorMsg(String.valueOf(permissionCode.getCode()));
         result.setMsg(msg == null ? permissionCode.getMsg() : msg);
+        return result;
+    }
+
+    public static Result authFail(PermissionErrorCode permissionCode,String path,String errorMsg) {
+        Result result = new Result();
+        result.setSuccess(false);
+        result.setPath(path);
+        result.setDateTime(new Date());
+        result.setCode(permissionCode.getCode());
+        String msg = LanguageMsgUtils.getErrorMsg(String.valueOf(permissionCode.getCode()));
+        result.setMsg(msg == null ? permissionCode.getMsg() : msg);
+        result.setMsg(result.getMsg()+":"+errorMsg);
         return result;
     }
 }
