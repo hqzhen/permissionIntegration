@@ -37,6 +37,7 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/permission/resource/**"
                         ,"/permission/user/**"
                         ,"/permission/common/**"
+                        ,"/permission/excel/**"
                 )
                 .authenticated()
                 .anyRequest().permitAll();
