@@ -34,7 +34,10 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
         http.csrf().disable();
         //2.放行相关请求
         http.authorizeRequests()
-                .antMatchers("/permission/resource/**","/permission/user/**")
+                .antMatchers("/permission/resource/**"
+                        ,"/permission/user/**"
+                        ,"/permission/common/**"
+                )
                 .authenticated()
                 .anyRequest().permitAll();
         //3、登入设置
